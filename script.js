@@ -8,7 +8,7 @@ import {
     updateProfile
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import {
-    getFirestore,
+    initializeFirestore,
     collection,
     doc,
     setDoc,
@@ -31,7 +31,11 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-const db = getFirestore(app);
+
+const db = initializeFirestore(app, {
+    experimentalForceLongPolling: true,
+    useFetchStreams: false
+});
 
 const authScreen = document.getElementById("AuthScreen");
 const authTitle = document.getElementById("AuthTitle");
@@ -184,20 +188,31 @@ submitAuth.addEventListener("click", async () => {
             if (!/^[a-zA-Z0-9_.-]+$/.test(username)) {
                 throw { code: "custom/username-chars" };
             }
-            const cred = await createUserWithEmailAndPassword(auth, email, pass);
+            const cred = await withTimeout(
+                createUserWithEmailAndPassword(auth, email, pass),
+                15000
+            );
             await updateProfile(cred.user, { displayName: username });
-            await setDoc(doc(db, "users", cred.user.uid), {
-                username: username,
-                createdAt: serverTimestamp()
-            });
+            await withTimeout(
+                setDoc(doc(db, "users", cred.user.uid), {
+                    username: username,
+                    createdAt: serverTimestamp()
+                }),
+                15000
+            );
         } else {
-            await signInWithEmailAndPassword(auth, email, pass);
+            await withTimeout(
+                signInWithEmailAndPassword(auth, email, pass),
+                15000
+            );
         }
         emailInput.value = "";
         password.value = "";
         usernameInput.value = "";
     } catch (err) {
-        if (err.code === "custom/username") {
+        if (err.message === "timeout") {
+            authMessage.textContent = "Connection blocked. Disable Shields/adblock for this site.";
+        } else if (err.code === "custom/username") {
             authMessage.textContent = "Username must be 3-24 characters.";
         } else if (err.code === "custom/username-chars") {
             authMessage.textContent = "Username: letters, numbers, _ . - only.";
@@ -523,7 +538,7 @@ publishScript.addEventListener("click", async () => {
     } catch (e) {
         console.error(e);
         if (e.message === "timeout") {
-            addMessage.textContent = "Connection blocked. Disable your ad blocker for this site.";
+            addMessage.textContent = "Connection blocked. Disable Shields/adblock for this site.";
         } else {
             addMessage.textContent = "Failed to publish. Try again.";
         }
