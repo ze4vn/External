@@ -91,6 +91,15 @@ let commentsUnsubscribe = null;
 let currentProjects = [];
 let activeProject = null;
 
+function withTimeout(promise, ms) {
+    return Promise.race([
+        promise,
+        new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("timeout")), ms)
+        )
+    ]);
+}
+
 function setAuthMode(mode) {
     authMode = mode;
     authMessage.textContent = "";
@@ -389,12 +398,12 @@ postCommentButton.addEventListener("click", async () => {
     if (text.length > 1000) return;
     postCommentButton.disabled = true;
     try {
-        await addDoc(collection(db, "projects", activeProject.id, "comments"), {
+        await withTimeout(addDoc(collection(db, "projects", activeProject.id, "comments"), {
             text: text,
             authorId: currentUser.uid,
             authorName: currentUser.name,
             createdAt: serverTimestamp()
-        });
+        }), 15000);
         commentInput.value = "";
     } catch (e) {
         console.error(e);
@@ -498,7 +507,7 @@ publishScript.addEventListener("click", async () => {
 
     try {
         const newDocRef = doc(collection(db, "projects"));
-        await setDoc(newDocRef, {
+        await withTimeout(setDoc(newDocRef, {
             title: title,
             description: description,
             code: code,
@@ -506,7 +515,7 @@ publishScript.addEventListener("click", async () => {
             authorId: currentUser.uid,
             authorName: currentUser.name,
             createdAt: serverTimestamp()
-        });
+        }), 15000);
 
         closeAddModal();
         if (currentPage !== lang) {
@@ -514,7 +523,11 @@ publishScript.addEventListener("click", async () => {
         }
     } catch (e) {
         console.error(e);
-        addMessage.textContent = "Failed to publish. Try again.";
+        if (e.message === "timeout") {
+            addMessage.textContent = "Connection blocked. Disable your ad blocker for this site.";
+        } else {
+            addMessage.textContent = "Failed to publish. Try again.";
+        }
     } finally {
         publishScript.disabled = false;
         publishScript.textContent = originalText;
