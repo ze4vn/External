@@ -33,7 +33,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const db = initializeFirestore(app, {
-    experimentalForceLongPolling: true,
+    experimentalAutoDetectLongPolling: true,
     useFetchStreams: false
 });
 
@@ -211,7 +211,7 @@ submitAuth.addEventListener("click", async () => {
         usernameInput.value = "";
     } catch (err) {
         if (err.message === "timeout") {
-            authMessage.textContent = "Connection blocked. Disable Shields/adblock for this site.";
+            authMessage.textContent = "Connection blocked. Check browser privacy settings.";
         } else if (err.code === "custom/username") {
             authMessage.textContent = "Username must be 3-24 characters.";
         } else if (err.code === "custom/username-chars") {
@@ -538,7 +538,7 @@ publishScript.addEventListener("click", async () => {
     } catch (e) {
         console.error(e);
         if (e.message === "timeout") {
-            addMessage.textContent = "Connection blocked. Disable Shields/adblock for this site.";
+            addMessage.textContent = "Connection blocked. Check browser privacy settings.";
         } else {
             addMessage.textContent = "Failed to publish. Try again.";
         }
