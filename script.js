@@ -19,12 +19,6 @@ import {
     onSnapshot,
     serverTimestamp
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
-import {
-    getStorage,
-    ref,
-    uploadBytes,
-    getDownloadURL
-} from "https://www.gstatic.com/firebasejs/12.18.0/firebase-storage.js";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBqy50MNHKdMYF6L0MtJiccHpXXYwU9CgM",
@@ -39,7 +33,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const storage = getStorage(app);
 
 const authScreen = document.getElementById("AuthScreen");
 const authTitle = document.getElementById("AuthTitle");
@@ -73,8 +66,6 @@ const addModal = document.getElementById("AddModal");
 const closeModal = document.getElementById("CloseModal");
 const cancelAdd = document.getElementById("CancelAdd");
 const publishScript = document.getElementById("PublishScript");
-const fileInput = document.getElementById("FileInput");
-const fileName = document.getElementById("FileName");
 const scriptLanguage = document.getElementById("ScriptLanguage");
 const scriptTitle = document.getElementById("ScriptTitle");
 const scriptDescription = document.getElementById("ScriptDescription");
@@ -83,7 +74,6 @@ const addMessage = document.getElementById("AddMessage");
 
 const detailView = document.getElementById("DetailView");
 const backButton = document.getElementById("BackButton");
-const detailImage = document.getElementById("DetailImage");
 const detailTitle = document.getElementById("DetailTitle");
 const detailCreator = document.getElementById("DetailCreator");
 const detailDescription = document.getElementById("DetailDescription");
@@ -96,14 +86,10 @@ const postCommentButton = document.getElementById("PostCommentButton");
 let currentPage = "executor";
 let currentUser = null;
 let authMode = "login";
-let pendingFile = null;
 let projectsUnsubscribe = null;
 let commentsUnsubscribe = null;
 let currentProjects = [];
 let activeProject = null;
-
-const MAX_IMAGE_BYTES = 5 * 1024 * 1024;
-const ALLOWED_IMAGE_TYPES = ["image/png", "image/jpeg", "image/webp", "image/gif"];
 
 function setAuthMode(mode) {
     authMode = mode;
@@ -241,16 +227,6 @@ function displayProjects() {
         const card = document.createElement("div");
         card.className = "ProjectCard";
 
-        if (project.imageUrl) {
-            const img = document.createElement("img");
-            img.className = "ProjectImage";
-            img.src = project.imageUrl;
-            img.alt = project.title || "Script thumbnail";
-            img.loading = "lazy";
-            img.onerror = () => { img.style.display = "none"; };
-            card.appendChild(img);
-        }
-
         const header = document.createElement("div");
         header.className = "ProjectHeader";
 
@@ -313,13 +289,6 @@ function openDetail(projectId) {
     if (!project) return;
     activeProject = project;
 
-    if (project.imageUrl) {
-        detailImage.src = project.imageUrl;
-        detailImage.style.display = "block";
-    } else {
-        detailImage.removeAttribute("src");
-        detailImage.style.display = "none";
-    }
     detailTitle.textContent = project.title || "Untitled";
     detailCreator.textContent = project.authorName ? "by " + project.authorName : "by Anonymous";
     detailDescription.textContent = project.description || "No description.";
@@ -474,16 +443,12 @@ function openAddModal() {
     scriptTitle.value = "";
     scriptDescription.value = "";
     scriptCode.value = "";
-    fileName.textContent = "No image selected";
-    fileInput.value = "";
-    pendingFile = null;
     addMessage.textContent = "";
     addModal.classList.add("show");
 }
 
 function closeAddModal() {
     addModal.classList.remove("show");
-    pendingFile = null;
 }
 
 addButton.addEventListener("click", openAddModal);
@@ -493,36 +458,6 @@ cancelAdd.addEventListener("click", closeAddModal);
 addModal.addEventListener("click", (e) => {
     if (e.target === addModal) closeAddModal();
 });
-
-fileInput.addEventListener("change", () => {
-    const file = fileInput.files[0];
-    if (!file) {
-        fileName.textContent = "No image selected";
-        pendingFile = null;
-        return;
-    }
-    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-        addMessage.textContent = "Only PNG, JPG, WEBP, or GIF allowed.";
-        fileName.textContent = "No image selected";
-        fileInput.value = "";
-        pendingFile = null;
-        return;
-    }
-    if (file.size > MAX_IMAGE_BYTES) {
-        addMessage.textContent = "Image must be under 5MB.";
-        fileName.textContent = "No image selected";
-        fileInput.value = "";
-        pendingFile = null;
-        return;
-    }
-    addMessage.textContent = "";
-    fileName.textContent = file.name;
-    pendingFile = file;
-});
-
-function sanitizeFileName(name) {
-    return name.replace(/[^a-zA-Z0-9._-]/g, "_").slice(0, 100);
-}
 
 publishScript.addEventListener("click", async () => {
     if (!currentUser) {
@@ -563,22 +498,12 @@ publishScript.addEventListener("click", async () => {
 
     try {
         const newDocRef = doc(collection(db, "projects"));
-        const projectId = newDocRef.id;
-        let imageUrl = "";
-
-        if (pendingFile) {
-            const safeName = sanitizeFileName(pendingFile.name);
-            const storageRef = ref(storage, `projects/${currentUser.uid}/${projectId}_${safeName}`);
-            await uploadBytes(storageRef, pendingFile);
-            imageUrl = await getDownloadURL(storageRef);
-        }
-
         await setDoc(newDocRef, {
             title: title,
             description: description,
             code: code,
             language: lang,
-            imageUrl: imageUrl,
+            imageUrl: "",
             authorId: currentUser.uid,
             authorName: currentUser.name,
             createdAt: serverTimestamp()
