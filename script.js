@@ -24,7 +24,6 @@ const firebaseConfig = {
     apiKey: "AIzaSyBqy50MNHKdMYF6L0MtJiccHpXXYwU9CgM",
     authDomain: "external-17739.firebaseapp.com",
     projectId: "external-17739",
-    storageBucket: "external-17739.firebasestorage.app",
     messagingSenderId: "584942543170",
     appId: "1:584942543170:web:4536fc1f449988dd3328db",
     measurementId: "G-HD537F5ZY9"
