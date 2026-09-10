@@ -503,7 +503,6 @@ publishScript.addEventListener("click", async () => {
             description: description,
             code: code,
             language: lang,
-            imageUrl: "",
             authorId: currentUser.uid,
             authorName: currentUser.name,
             createdAt: serverTimestamp()
