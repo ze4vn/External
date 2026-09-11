@@ -8,6 +8,7 @@ const pageTitles = {
 const pageTitle = document.getElementById("PageTitle");
 const searchbar = document.getElementById("Searchbar");
 const navButtons = document.querySelectorAll(".NavButton");
+const mobileNav = document.getElementById("MobileNav");
 const projectGrid = document.getElementById("ProjectGrid");
 
 const addButton = document.getElementById("AddButton");
@@ -250,6 +251,7 @@ function changePage(page) {
     navButtons.forEach(button => {
         button.classList.toggle("active", button.dataset.page === page);
     });
+    if (mobileNav) mobileNav.value = page;
     displayProjects();
 }
 
@@ -258,6 +260,12 @@ navButtons.forEach(button => {
         changePage(button.dataset.page);
     });
 });
+
+if (mobileNav) {
+    mobileNav.addEventListener("change", () => {
+        changePage(mobileNav.value);
+    });
+}
 
 searchbar.addEventListener("input", displayProjects);
 
