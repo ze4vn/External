@@ -891,27 +891,75 @@ body {
 }
 
 @media (max-width: 850px) {
-    .TopBar { flex-wrap: wrap; }
+    .TopBar {
+        flex-wrap: wrap;
+        gap: 12px;
+        padding: 12px 16px 14px;
+    }
     .Navigation {
         order: 3;
         width: 100%;
         overflow-x: auto;
-        scrollbar-width: none;
+        gap: 6px;
+        padding-bottom: 8px;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(255, 255, 255, 0.28) rgba(255, 255, 255, 0.05);
     }
-    .Navigation::-webkit-scrollbar { display: none; }
-    .Searchbar { margin-left: auto; }
+    .Navigation::-webkit-scrollbar {
+        height: 5px;
+    }
+    .Navigation::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+        border-radius: 4px;
+    }
+    .Navigation::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.28);
+        border-radius: 4px;
+    }
+    .Navigation::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.45);
+    }
+    .NavButton {
+        flex-shrink: 0;
+    }
+    .Searchbar {
+        margin-left: auto;
+    }
 }
 
 @media (max-width: 550px) {
-    .TopBar { padding: 12px 15px; }
-    .Logo { font-size: 17px; }
-    .Searchbar { width: 140px; }
-    .Searchbar:focus { width: 160px; }
-    .Page { width: 92%; padding-top: 40px; }
-    #PageTitle { font-size: 25px; }
-    .ProjectGrid { grid-template-columns: 1fr; }
-    .DetailContent { padding: 20px; }
-    .DetailTitle { font-size: 20px; }
-    .CommentForm { flex-wrap: wrap; }
-    .CommentInput.NameInput { flex: 1 1 100%; }
+    .TopBar {
+        padding: 12px 15px;
+    }
+    .Logo {
+        font-size: 17px;
+    }
+    .Searchbar {
+        width: 140px;
+    }
+    .Searchbar:focus {
+        width: 160px;
+    }
+    .Page {
+        width: 92%;
+        padding-top: 40px;
+    }
+    #PageTitle {
+        font-size: 25px;
+    }
+    .ProjectGrid {
+        grid-template-columns: 1fr;
+    }
+    .DetailContent {
+        padding: 20px;
+    }
+    .DetailTitle {
+        font-size: 20px;
+    }
+    .CommentForm {
+        flex-wrap: wrap;
+    }
+    .CommentInput.NameInput {
+        flex: 1 1 100%;
+    }
 }
