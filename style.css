@@ -27,217 +27,6 @@ body {
     background-attachment: fixed;
 }
 
-.AuthScreen {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    background: rgba(5, 5, 8, 0.42);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    animation: authBackground 0.7s ease forwards;
-}
-
-.AuthBox {
-    width: 100%;
-    max-width: 360px;
-    padding: 30px;
-    background: rgba(20, 20, 25, 0.55);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 17px;
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05);
-    animation: authBoxEnter 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.AuthBox h1 {
-    margin-bottom: 24px;
-    color: white;
-    font-size: 24px;
-    font-weight: 500;
-    letter-spacing: -0.8px;
-}
-
-.InputWrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    margin-bottom: 11px;
-}
-
-#UsernameWrapper {
-    display: none;
-}
-
-#UsernameWrapper.show {
-    display: flex;
-}
-
-.InputWrapper input {
-    width: 100%;
-    height: 44px;
-    padding: 0 13px 0 31px;
-    color: white;
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.14);
-    border-radius: 9px;
-    outline: none;
-    font-family: inherit;
-    font-size: 12px;
-    transition: background 0.25s ease, border 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-}
-
-.InputWrapper input::placeholder {
-    color: rgba(255, 255, 255, 0.42);
-}
-
-.InputWrapper input:focus {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
-    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.035);
-    transform: translateY(-1px);
-}
-
-.InputPrefix {
-    position: absolute;
-    left: 12px;
-    z-index: 2;
-    color: rgba(255, 255, 255, 0.45);
-    font-family: "JetBrains Mono", Consolas, monospace;
-    font-size: 12px;
-    pointer-events: none;
-    transition: color 0.2s ease;
-}
-
-.InputWrapper:focus-within .InputPrefix {
-    color: white;
-}
-
-.PasswordWrapper input {
-    padding-left: 13px;
-    padding-right: 43px;
-}
-
-.PasswordToggle {
-    position: absolute;
-    right: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    color: rgba(255, 255, 255, 0.45);
-    background: transparent;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
-}
-
-.PasswordToggle svg {
-    width: 16px;
-    height: 16px;
-}
-
-.PasswordToggle:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.08);
-    transform: scale(1.05);
-}
-
-.PasswordToggle:active {
-    transform: scale(0.94);
-}
-
-.AuthActions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: 20px;
-}
-
-.AuthSwitch {
-    margin-top: 16px;
-    text-align: center;
-    font-size: 10px;
-    color: rgba(255, 255, 255, 0.4);
-}
-
-.AuthSwitch button {
-    margin-left: 4px;
-    padding: 0;
-    color: white;
-    background: transparent;
-    border: none;
-    font-family: inherit;
-    font-size: 10px;
-    font-weight: 500;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-.AuthSwitch button:hover {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.AuthButton {
-    padding: 8px 12px;
-    color: rgba(255, 255, 255, 0.7);
-    background: rgba(255, 255, 255, 0.07);
-    border: 1px solid rgba(255, 255, 255, 0.13);
-    border-radius: 7px;
-    font-family: inherit;
-    font-size: 10px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: color 0.25s ease, background 0.25s ease, border 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.AuthButton:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.14);
-    border-color: rgba(255, 255, 255, 0.22);
-    transform: translateY(-1px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
-}
-
-.AuthButton:active {
-    transform: translateY(0) scale(0.97);
-}
-
-.AuthButton:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.AuthButton.Primary {
-    color: white;
-    background: rgba(255, 255, 255, 0.18);
-    border-color: rgba(255, 255, 255, 0.25);
-}
-
-.AuthButton.Primary:hover {
-    background: rgba(255, 255, 255, 0.28);
-    border-color: rgba(255, 255, 255, 0.35);
-}
-
-.AuthScreen.hide {
-    pointer-events: none;
-    animation: authBackgroundOut 0.5s ease forwards;
-}
-
-.AuthScreen.hide .AuthBox {
-    animation: authBoxExit 0.5s cubic-bezier(0.4, 0, 1, 1) forwards;
-}
-
 .TopBar {
     position: sticky;
     top: 0;
@@ -548,26 +337,134 @@ body {
     gap: 12px;
 }
 
-.UserLabel {
-    color: rgba(255, 255, 255, 0.55);
-}
-
-.LogoutButton {
-    padding: 4px 8px;
-    color: rgba(255, 255, 255, 0.55);
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 5px;
-    font-family: inherit;
-    font-size: 9px;
-    cursor: pointer;
-    transition: color 0.2s ease, background 0.2s ease, border 0.2s ease;
-}
-
-.LogoutButton:hover {
-    color: white;
+.DailyLoginButton {
+    padding: 5px 11px;
+    color: rgba(255, 255, 255, 0.75);
     background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s ease, background 0.2s ease, border 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.DailyLoginButton:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.16);
     border-color: rgba(255, 255, 255, 0.25);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.DailyLoginButton:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.DailyBox {
+    max-width: 460px;
+}
+
+.DailyHint {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+.RewardGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+}
+
+.RewardCard {
+    padding: 18px 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.25s ease, border 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.RewardCard:hover {
+    transform: translateY(-3px);
+    border-color: rgba(255, 255, 255, 0.28);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+
+.RewardCard:active {
+    transform: translateY(0) scale(0.97);
+}
+
+.RewardCard.claimed {
+    opacity: 0.45;
+    pointer-events: none;
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.RewardCardTitle {
+    font-size: 13px;
+    font-weight: 600;
+    color: white;
+    margin-bottom: 6px;
+    letter-spacing: -0.2px;
+}
+
+.RewardCardHandle {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+    font-family: "JetBrains Mono", Consolas, monospace;
+}
+
+.RewardBox {
+    max-width: 440px;
+}
+
+.RewardContent {
+    padding: 4px 0 6px;
+    animation: rewardFadeIn 0.55s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.RewardLine {
+    font-size: 12px;
+    line-height: 1.7;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 4px;
+    word-break: break-word;
+    font-family: "JetBrains Mono", Consolas, monospace;
+}
+
+.RewardTitle {
+    color: white;
+    font-weight: 600;
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.RewardDivider {
+    color: rgba(255, 255, 255, 0.25);
+    letter-spacing: -1px;
+    margin: 8px 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.RewardArrow {
+    color: rgba(255, 255, 255, 0.55);
+}
+
+.RewardEmail {
+    color: white;
+    font-weight: 500;
+}
+
+.RewardPasskey {
+    color: #7ee787;
+    word-break: break-all;
 }
 
 .DetailView {
@@ -753,6 +650,10 @@ body {
     transition: background 0.25s ease, border 0.25s ease, box-shadow 0.25s ease;
 }
 
+.CommentInput.NameInput {
+    flex: 0 0 120px;
+}
+
 .CommentInput::placeholder {
     color: rgba(255, 255, 255, 0.35);
 }
@@ -834,12 +735,16 @@ body {
     font-size: 22px;
     line-height: 1;
     cursor: pointer;
-    transition: color 0.2s ease, background 0.2s ease;
+    transition: color 0.2s ease, background 0.2s ease, transform 0.2s ease;
 }
 
 .ModalClose:hover {
     color: white;
     background: rgba(255, 255, 255, 0.08);
+}
+
+.ModalClose:active {
+    transform: scale(0.92);
 }
 
 .ModalBody {
@@ -922,32 +827,47 @@ body {
     margin-top: 24px;
 }
 
-.AddMessage,
-.AuthMessage {
+.AddMessage {
     margin: 0;
     font-size: 10px;
     color: #ff6b6b;
     min-height: 14px;
 }
 
-@keyframes authBackground {
-    from { opacity: 0; }
-    to { opacity: 1; }
+.AuthButton {
+    padding: 8px 12px;
+    color: rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.07);
+    border: 1px solid rgba(255, 255, 255, 0.13);
+    border-radius: 7px;
+    font-family: inherit;
+    font-size: 10px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.25s ease, background 0.25s ease, border 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
 }
 
-@keyframes authBoxEnter {
-    from { opacity: 0; transform: translateY(70px) scale(0.96); }
-    to { opacity: 1; transform: translateY(0) scale(1); }
+.AuthButton:hover {
+    color: white;
+    background: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.22);
+    transform: translateY(-1px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
 }
 
-@keyframes authBackgroundOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
+.AuthButton:active {
+    transform: translateY(0) scale(0.97);
 }
 
-@keyframes authBoxExit {
-    from { opacity: 1; transform: translateY(0) scale(1); }
-    to { opacity: 0; transform: translateY(-25px) scale(0.97); }
+.AuthButton.Primary {
+    color: white;
+    background: rgba(255, 255, 255, 0.18);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+.AuthButton.Primary:hover {
+    background: rgba(255, 255, 255, 0.28);
+    border-color: rgba(255, 255, 255, 0.35);
 }
 
 @keyframes barEnter {
@@ -963,6 +883,11 @@ body {
 @keyframes titleEnter {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rewardFadeIn {
+    from { opacity: 0; transform: translateY(14px) scale(0.97); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @media (max-width: 850px) {
@@ -985,7 +910,8 @@ body {
     .Page { width: 92%; padding-top: 40px; }
     #PageTitle { font-size: 25px; }
     .ProjectGrid { grid-template-columns: 1fr; }
-    .AuthBox { max-width: 340px; padding: 25px; }
     .DetailContent { padding: 20px; }
     .DetailTitle { font-size: 20px; }
+    .CommentForm { flex-wrap: wrap; }
+    .CommentInput.NameInput { flex: 1 1 100%; }
 }
